@@ -11,14 +11,14 @@ pipeline {
   stages {
     stage("setup"){
       steps{
-          sh "mkdir arch"
+          sh "mkdir -p arch"
       }
     }
     stage('Build') {
       steps {
           sh """
             echo "first stage"
-            echo "artifact1" > arch
+            echo "artifact1" > arch/result
           """   
       }
       post {
