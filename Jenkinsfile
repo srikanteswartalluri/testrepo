@@ -1,37 +1,25 @@
 pipeline {
-
-
  agent any
-
   // using the Timestamper plugin we can add timestamps to the console log
   options {
     timestamps()
   }
-
   environment {
-
     IMAGE = "sampleimage"
     VERSION = "1.2"
   }
-
   stages {
-    stage{
+    stage("setup"){
       steps{
-
           sh "mkdir arch"
       }
     }
     stage('Build') {
-      
       steps {
-
-    
           sh """
             echo "first stage"
             echo "artifact1" > arch
-          """
-        
-        
+          """   
       }
       post {
         success {
