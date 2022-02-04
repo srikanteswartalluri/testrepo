@@ -17,10 +17,9 @@ pipeline {
   stages {
     stage{
       steps{
-        script
+
           sh "mkdir arch"
-        }
-      
+  
     }
     stage('Build') {
       
