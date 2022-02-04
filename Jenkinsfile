@@ -18,6 +18,8 @@ pipeline {
       steps {
           sh """
             echo "first stage"
+            echo "sleeping for 20 sec"
+            sleep 20
             echo "artifact1" > arch/result
           """   
       }
