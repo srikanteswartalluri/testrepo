@@ -19,7 +19,7 @@ pipeline {
       steps{
 
           sh "mkdir arch"
-  
+      }
     }
     stage('Build') {
       
