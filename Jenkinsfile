@@ -12,7 +12,8 @@ pipeline {
     stage("setup"){
       steps{
        script{
-          
+          log.info("message from shared lib")
+          log.warning("shared lib warning")
           sh "mkdir -p arch"
        }
       }
@@ -26,16 +27,7 @@ pipeline {
             echo "artifact1" > arch/result
           """   
       }
-      post {
-        success {
-        
-          archiveArtifacts(artifacts: 'arch/*', allowEmptyArchive: true)
-         script{
-          slack.notifyPass("I am from jenkins shared lib")
-         }
-        }
-      }
-    }
+      
 
     stage('Quality Analysis') {
       parallel {
@@ -74,9 +66,15 @@ pipeline {
   }
 
   post {
+   success {
+        
+          archiveArtifacts(artifacts: 'arch/*', allowEmptyArchive: true)
+         
+        }
+      }
     failure {
       // notify users when the Pipeline fails
-      mail to: 'team@example.com',
+      mail to: 'talluri@netapp.com',
           subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
           body: "Something is wrong with ${env.BUILD_URL}"
     }
