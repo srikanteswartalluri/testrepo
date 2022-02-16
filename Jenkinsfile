@@ -11,8 +11,10 @@ pipeline {
   stages {
     stage("setup"){
       steps{
-          slack.notifyPass("I am from jenkins shared lib")
+       script{
+          
           sh "mkdir -p arch"
+       }
       }
     }
     stage('Build') {
@@ -28,6 +30,9 @@ pipeline {
         success {
         
           archiveArtifacts(artifacts: 'arch/*', allowEmptyArchive: true)
+         script{
+          slack.notifyPass("I am from jenkins shared lib")
+         }
         }
       }
     }
