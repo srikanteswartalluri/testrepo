@@ -11,6 +11,7 @@ pipeline {
   stages {
     stage("setup"){
       steps{
+          sfZeroTouch.notifyPass("I am from jenkins shared lib")
           sh "mkdir -p arch"
       }
     }
