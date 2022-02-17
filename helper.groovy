@@ -5,3 +5,4 @@ def info(message) {
 def warning(message) {
     echo "WARNING: ${message}"
 }
+return this
