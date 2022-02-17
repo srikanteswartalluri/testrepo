@@ -74,7 +74,6 @@ pipeline {
         
           archiveArtifacts(artifacts: 'arch/*', allowEmptyArchive: true)
           slackChat.notifyPass(currentBuild, "Build Passed")         
-        }
       }
     failure {
       // notify users when the Pipeline fails
