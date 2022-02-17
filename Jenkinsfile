@@ -19,7 +19,7 @@ pipeline {
   }
   environment {
     IMAGE = "sampleimage"
-    VERSION = "1.2"
+    VERSION = "${params.VERSION}"
     CHAT_ROOM = "${params.SLACK_ROOM}"
   }
   stages {
