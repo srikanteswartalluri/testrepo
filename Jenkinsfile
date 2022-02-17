@@ -83,7 +83,9 @@ pipeline {
 
   post {
       success{
+           archiveArtifacts "arch/*"
            script{
+                
           	slackChat.notifyPass(currentBuild, "Build Passed")
       	   }
       }
