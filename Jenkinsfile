@@ -12,6 +12,9 @@ pipeline {
      string(name: 'EMAIL_ADDRESS',
                description: 'email address',
                defaultValue: 'talluri@netapp.com')
+   string(name: 'VERSION',
+               description: 'app version',
+               defaultValue: '1.1')
     
   }
   environment {
@@ -26,6 +29,7 @@ pipeline {
           log.info("I am info")
           log.info("I am warning")
           sh "mkdir -p arch"
+          echo params.VERSION
           log_local_lib = load("helper.groovy")
           log_local_lib.info("Hello from local lib")
        }
