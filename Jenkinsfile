@@ -4,21 +4,30 @@ pipeline {
   options {
     timestamps()
   }
+  parameters{
+     string(name: 'SLACK_ROOM',
+               description: 'slack channel name',
+               defaultValue: 'jenkins-training')
+     
+     string(name: 'EMAIL_ADDRESS',
+               description: 'email address',
+               defaultValue: 'talluri@netapp.com')
+    
+  }
   environment {
     IMAGE = "sampleimage"
     VERSION = "1.2"
-    CHAT_ROOM="jenkins-training"
+    CHAT_ROOM = "${params.SLACK_ROOM}"
   }
   stages {
     stage("setup"){
       steps{
        script{
-          log.info("message from shared lib")
-          log.warning("shared lib warning")
+          log.info("I am info")
+          log.info("I am warning")
           sh "mkdir -p arch"
-          //load local lib
-          log_from_lib = load("helper.groovy")
-          log_from_lib.info("Hello from local library")
+          log_local_lib = load("helper.groovy")
+          log_local_lib.info("Hello from local lib")
        }
       }
     }
@@ -32,6 +41,7 @@ pipeline {
           """   
       }
       
+    }
 
     stage('Quality Analysis') {
       parallel {
@@ -58,7 +68,9 @@ pipeline {
 
     stage('Build and Publish Image') {
       when {
-        branch 'master'  //only run these steps on the master branch
+        expression {
+            return env.VERSION != '1.1';
+        }
       }
       steps {
        
@@ -70,16 +82,18 @@ pipeline {
   }
 
   post {
-   success {
-        
-          archiveArtifacts(artifacts: 'arch/*', allowEmptyArchive: true)
-          slackChat.notifyPass(currentBuild, "Build Passed")         
+      success{
+           script{
+          	slackChat.notifyPass(currentBuild, "Build Passed")
+      	   }
       }
     failure {
       // notify users when the Pipeline fails
-      mail to: 'talluri@netapp.com',
+      mail to: params.EMAIL_ADRESS,
           subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
           body: "Something is wrong with ${env.BUILD_URL}"
+     
     }
   }
 }
+
