@@ -7,6 +7,7 @@ pipeline {
   environment {
     IMAGE = "sampleimage"
     VERSION = "1.2"
+    CHAT_ROOM="jenkins-training"
   }
   stages {
     stage("setup"){
@@ -15,6 +16,9 @@ pipeline {
           log.info("message from shared lib")
           log.warning("shared lib warning")
           sh "mkdir -p arch"
+          //load local lib
+          log_from_lib = load("helper.groovy")
+          log_from_lib.info("Hello from local library")
        }
       }
     }
@@ -69,7 +73,7 @@ pipeline {
    success {
         
           archiveArtifacts(artifacts: 'arch/*', allowEmptyArchive: true)
-         
+          slackChat.notifyPass(currentBuild, "Build Passed")         
         }
       }
     failure {
